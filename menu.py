@@ -15,3 +15,31 @@ class Menu:
 
     def get_price(self, item):
         return self.items.get(item)
+
+
+def search_food(menu, search_term):
+    results = []
+
+    for item in menu:
+        name = item["name"].lower()
+        category = item["category"].lower()
+
+        if search_term.lower() in name or search_term.lower() in category:
+            results.append(item)
+
+    return results
+
+
+menu = [
+    {"name": "Beef Burger", "category": "Fast Food", "price": 5000},
+    {"name": "Chicken Pizza", "category": "Fast Food", "price": 7000},
+    {"name": "Orange Juice", "category": "Drinks", "price": 2000}
+]
+
+results = search_food(menu, "burger")
+
+if results:
+    for item in results:
+        print(item["name"], "-", item["price"], "RWF")
+else:
+    print("No food found.")
