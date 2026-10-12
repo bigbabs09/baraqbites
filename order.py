@@ -25,3 +25,25 @@ class Order:
             print(item, "-", menu.get_price(item), "RWF")
 
         print("Total:", self.calculate_total(menu), "RWF")
+
+
+def calculate_order_total(order):
+    total = 0
+
+    for item in order:
+        price = item["price"]
+        quantity = item["quantity"]
+
+        total += price * quantity
+
+    return total
+
+
+sample_order = [
+    {"name": "Burger", "price": 5000, "quantity": 2},
+    {"name": "Juice", "price": 2000, "quantity": 3}
+]
+
+total = calculate_order_total(sample_order)
+
+print("Order total:", total, "RWF")
