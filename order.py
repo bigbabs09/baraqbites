@@ -1,17 +1,22 @@
+
 class Order:
     def __init__(self):
         self.items = []
 
-    def add_item(self, item):
-        self.items.append(item)
+    def add_item(self, item, quantity=1):
+        quantity = validate_quantity(quantity)
+
+        for _ in range(quantity):
+            self.items.append(item)
+
         print(item, "added to order.")
 
     def calculate_total(self, menu):
         total = 0
-
         for item in self.items:
-            total += menu.get_price(item)
-
+            price = menu.get_price(item)
+            if price is not None:
+                total += price
         return total
 
     def display_order(self, menu):
@@ -21,21 +26,28 @@ class Order:
             print("Your order is empty.")
             return
 
+        quantities = {}
         for item in self.items:
-            print(item, "-", menu.get_price(item), "RWF")
+            quantities[item] = quantities.get(item, 0) + 1
+
+        for item, quantity in quantities.items():
+            price = menu.get_price(item)
+            print(f"{item} x {quantity} - {price * quantity} RWF")
 
         print("Total:", self.calculate_total(menu), "RWF")
+
+    def apply_order_discount(self, menu, discount_percentage):
+        discount_percentage = validate_discount(discount_percentage)
+        total = self.calculate_total(menu)
+        return apply_discount(total, discount_percentage)
 
 
 def calculate_order_total(order):
     total = 0
-
     for item in order:
-        price = item["price"]
-        quantity = item["quantity"]
-
+        quantity = validate_quantity(item["quantity"])
+        price = validate_price(item["price"])
         total += price * quantity
-
     return total
 
 
@@ -75,31 +87,6 @@ def validate_discount(discount):
     return discount
 
 
-try:
-    quantity = validate_quantity("abc")
-    print(quantity)
-except ValueError as error:
-    print("Invalid input:", error)
-
-try:
-    quantity = validate_quantity(-3)
-    print(quantity)
-except ValueError as error:
-    print("Invalid input:", error)
-
-try:
-    discount = validate_discount(120)
-    print(discount)
-except ValueError as error:
-    print("Invalid input:", error)
-
-
-
-sample_order = [
-    {"name": "Burger", "price": 5000, "quantity": 2},
-    {"name": "Juice", "price": 2000, "quantity": 3}
-]
-
-total = calculate_order_total(sample_order)
-
-print("Order total:", total, "RWF")
+def apply_discount(total, discount_percentage):
+    discount_percentage = validate_discount(discount_percentage)
+    return total - total * (discount_percentage / 100)

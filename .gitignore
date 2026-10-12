@@ -1,4 +1,28 @@
+<<<<<<< HEAD
 .venv/
 __pycache__/
 *.py[cod]
 .idea/
+=======
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Environment variables and secrets
+.env
+
+# Django database
+db.sqlite3
+
+# IDE files
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+>>>>>>> 91d0c3aee14f3dd69f8d559303edc27bf2865f0b
